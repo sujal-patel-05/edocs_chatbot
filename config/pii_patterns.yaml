@@ -1,0 +1,11 @@
+# Custom PII regex recognizers for Symitar Episys assistant
+patterns:
+  - name: "SSN"
+    regex: '\b\d{3}-\d{2}-\d{4}\b|\b\d{9}\b'
+    score: 0.85
+  - name: "ACCOUNT_NUMBER"
+    regex: '\b(?:acct|account|mbr|member)(?:\s*(?:#|no|num|number)?\s*[:=]?\s*)(\d{6,12})\b'
+    score: 0.80
+  - name: "CARD_NUMBER"
+    regex: '\b(?:\d{4}[-\s]?){3}\d{4}\b'
+    score: 0.90

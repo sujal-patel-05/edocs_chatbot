@@ -1,0 +1,2167 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symitar eDocs Assistant | Credit Union Core Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --bg-base: #060913;
+            --bg-surface: #0b1120;
+            --bg-elevated: #131c31;
+            --bg-elevated-hover: #1a2744;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-input: rgba(15, 23, 42, 0.85);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(99, 102, 241, 0.35);
+            --border-focus: rgba(99, 102, 241, 0.6);
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: rgba(79, 70, 229, 0.15);
+            --primary-glow: rgba(79, 70, 229, 0.35);
+            --accent-emerald: #10b981;
+            --accent-emerald-light: rgba(16, 185, 129, 0.15);
+            --accent-cyan: #06b6d4;
+            --accent-cyan-light: rgba(6, 182, 212, 0.15);
+            --accent-violet: #8b5cf6;
+            --accent-amber: #f59e0b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-faint: #64748b;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+            --shadow-glow: 0 0 25px rgba(79, 70, 229, 0.2);
+        }
+
+        [data-theme="light"] {
+            --bg-base: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-elevated: #f1f5f9;
+            --bg-elevated-hover: #e2e8f0;
+            --bg-card: rgba(255, 255, 255, 0.92);
+            --bg-input: #ffffff;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-hover: rgba(79, 70, 229, 0.4);
+            --border-focus: rgba(79, 70, 229, 0.6);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --text-faint: #94a3b8;
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 25px rgba(79, 70, 229, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-image:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.12), transparent),
+                radial-gradient(ellipse 60% 40% at 90% 100%, rgba(6, 182, 212, 0.06), transparent);
+            background-attachment: fixed;
+        }
+
+        /* Top Header */
+        header {
+            height: 54px;
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            z-index: 20;
+            backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            box-shadow: 0 4px 12px var(--primary-glow);
+            position: relative;
+        }
+
+        .brand-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .brand-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 0.96rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, var(--text-main) 60%, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .badge-pro {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--primary-light);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .brand-sub {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--accent-emerald);
+            box-shadow: 0 0 6px var(--accent-emerald);
+            display: inline-block;
+            animation: pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.85);
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-field-palette {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 5px 11px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-field-palette:hover {
+            border-color: var(--border-hover);
+            color: var(--text-main);
+            background: var(--bg-elevated-hover);
+        }
+
+        .kbd-shortcut {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 0.68rem;
+            font-family: var(--font-mono);
+        }
+
+        .btn-icon {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-icon svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 54px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Sidebar (Clean ChatGPT/Claude Style) */
+        aside {
+            width: 260px;
+            background: var(--bg-surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 12px 10px;
+            gap: 10px;
+            flex-shrink: 0;
+            transition: margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+            z-index: 10;
+            height: 100%;
+        }
+
+        body.sidebar-collapsed aside {
+            margin-left: -260px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-btn-new {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            border: none;
+            border-radius: var(--radius-sm);
+            color: #ffffff;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px var(--primary-glow);
+            flex-shrink: 0;
+        }
+
+        .sidebar-btn-new:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px var(--primary-glow);
+            filter: brightness(1.05);
+        }
+
+        /* Chat History Section (ChatGPT Style) */
+        .history-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .sidebar-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px 6px 4px;
+        }
+
+        .sidebar-nav-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-faint);
+            font-weight: 700;
+        }
+
+        .btn-clear-history {
+            background: transparent;
+            border: none;
+            color: var(--text-faint);
+            font-size: 0.68rem;
+            cursor: pointer;
+            transition: color 0.15s ease;
+            padding: 2px 4px;
+        }
+
+        .btn-clear-history:hover {
+            color: #ef4444;
+        }
+
+        .history-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding-right: 2px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 9px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .history-item:hover {
+            background: var(--bg-elevated);
+            color: var(--text-main);
+            border-color: var(--border);
+        }
+
+        .history-item.active {
+            background: var(--primary-light);
+            color: #ffffff;
+            border-color: rgba(99, 102, 241, 0.4);
+            font-weight: 600;
+        }
+
+        .history-item-left {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .history-item-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn-delete-chat {
+            background: transparent;
+            border: none;
+            color: var(--text-faint);
+            cursor: pointer;
+            padding: 2px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+
+        .history-item:hover .btn-delete-chat {
+            display: flex;
+        }
+
+        .btn-delete-chat:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.12);
+        }
+
+        .history-empty {
+            padding: 14px 6px;
+            font-size: 0.76rem;
+            color: var(--text-faint);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Quick Shortcuts Section */
+        .sidebar-shortcuts-section {
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex-shrink: 0;
+            max-height: 160px;
+            overflow-y: auto;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .quick-link-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 8px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .quick-link-item:hover {
+            color: var(--text-main);
+            background: var(--bg-elevated);
+            border-color: var(--border);
+            transform: translateX(2px);
+        }
+
+        .quick-link-icon {
+            font-size: 0.8rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Main Chat Area */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-thread {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 20px 100px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scroll-behavior: smooth;
+        }
+
+        /* Hero Landing Component (Clean Modern AI Style) */
+        .hero {
+            margin: auto;
+            max-width: 660px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            padding: 24px 16px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 11px;
+            border-radius: 16px;
+            background: var(--primary-light);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #818cf8;
+            font-size: 0.74rem;
+            font-weight: 600;
+            box-shadow: 0 2px 8px var(--primary-glow);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 1.65rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 85%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        [data-theme="light"] .hero-title {
+            background: linear-gradient(135deg, #0f172a 40%, #4338ca 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.5;
+        }
+
+        .hero-prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            width: 100%;
+            max-width: 620px;
+            margin-top: 4px;
+        }
+
+        .prompt-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .prompt-card:hover {
+            border-color: var(--primary);
+            background: var(--bg-elevated);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .prompt-card-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-cyan);
+        }
+
+        .prompt-card-title {
+            font-weight: 600;
+            font-size: 0.84rem;
+            color: var(--text-main);
+        }
+
+        .prompt-card-desc {
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        /* Message Bubbles & Layout */
+        .message-row {
+            display: flex;
+            gap: 12px;
+            max-width: 880px;
+            width: 100%;
+            margin: 0 auto;
+            animation: messageSlideIn 0.25s ease-out;
+        }
+
+        @keyframes messageSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-row.user {
+            justify-content: flex-end;
+        }
+
+        .user-bubble {
+            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+            color: #ffffff;
+            padding: 9px 15px;
+            border-radius: 14px 14px 3px 14px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            max-width: 72%;
+            box-shadow: 0 3px 10px var(--primary-glow);
+            font-weight: 500;
+        }
+
+        /* Assistant Card */
+        .assistant-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s ease;
+            position: relative;
+        }
+
+        .assistant-card:hover {
+            border-color: rgba(99, 102, 241, 0.25);
+        }
+
+        /* Card Header Meta Bar */
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 2px;
+        }
+
+        .assistant-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .assistant-avatar {
+            width: 22px;
+            height: 22px;
+            border-radius: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.68rem;
+            font-weight: 800;
+        }
+
+        .intent-badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--accent-cyan);
+            border: 1px solid var(--border);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-copy-answer {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-size: 0.74rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-copy-answer:hover {
+            color: var(--text-main);
+            border-color: var(--border-hover);
+            background: var(--bg-elevated-hover);
+        }
+
+        /* Markdown Content Body */
+        .assistant-card .content {
+            font-size: 0.88rem;
+            line-height: 1.62;
+            color: var(--text-main);
+            overflow-wrap: break-word;
+        }
+
+        .assistant-card .content p {
+            margin-bottom: 10px;
+        }
+
+        .assistant-card .content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .assistant-card .content h1,
+        .assistant-card .content h2,
+        .assistant-card .content h3,
+        .assistant-card .content h4 {
+            font-family: var(--font-display);
+            color: var(--text-main);
+            margin: 16px 0 8px 0;
+            letter-spacing: -0.01em;
+        }
+
+        .assistant-card .content h3 {
+            font-size: 0.98rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .assistant-card .content strong {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Modern Code & Pre */
+        .assistant-card .content code {
+            background: rgba(99, 102, 241, 0.14);
+            color: #a5b4fc;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            border: 1px solid rgba(99, 102, 241, 0.22);
+        }
+
+        [data-theme="light"] .assistant-card .content code {
+            color: #4338ca;
+            background: #eef2ff;
+        }
+
+        .assistant-card .content pre {
+            background: #090e1a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        .assistant-card .content pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
+            color: #e2e8f0;
+        }
+
+        /* Modern Structured Tables (Compact & High Readability) */
+        .assistant-card .content table {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 12px 0 16px 0;
+            font-size: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, 0.65);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        [data-theme="light"] .assistant-card .content table {
+            background: #ffffff;
+            border-color: #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        .assistant-card .content th {
+            background: #1e293b;
+            color: #94a3b8;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.68rem;
+            letter-spacing: 0.05em;
+            padding: 8px 12px;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.35);
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        [data-theme="light"] .assistant-card .content th {
+            background: #f1f5f9;
+            color: #475569;
+            border-bottom: 2px solid #cbd5e1;
+        }
+
+        .assistant-card .content td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.5;
+        }
+
+        .assistant-card .content tr:last-child td {
+            border-bottom: none;
+        }
+
+        .assistant-card .content tr:hover td {
+            background: rgba(99, 102, 241, 0.06);
+        }
+
+        /* Column Badges */
+        .assistant-card .content th:nth-child(3),
+        .assistant-card .content td:nth-child(3) {
+            /* Field Number */
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: #38bdf8;
+            white-space: nowrap;
+        }
+
+        .assistant-card .content th:nth-child(4),
+        .assistant-card .content td:nth-child(4) {
+            /* PowerOn Mnemonic */
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: #a78bfa;
+            white-space: nowrap;
+        }
+
+        .assistant-card .content th:nth-child(5),
+        .assistant-card .content td:nth-child(5) {
+            /* Data Type */
+            white-space: nowrap;
+            color: #34d399;
+            font-weight: 500;
+        }
+
+        .assistant-card .content td:last-child {
+            /* Description column */
+            min-width: 260px;
+            color: var(--text-main);
+        }
+
+        /* Defined Code Value & Option Lists */
+        .assistant-card .content ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 14px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .assistant-card .content ul li {
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary);
+            padding: 7px 12px;
+            border-radius: 5px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            transition: all 0.15s ease;
+        }
+
+        [data-theme="light"] .assistant-card .content ul li {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+            border-left-color: var(--primary);
+        }
+
+        .assistant-card .content ul li:hover {
+            background: rgba(99, 102, 241, 0.06);
+            border-color: rgba(99, 102, 241, 0.35);
+            transform: translateX(2px);
+        }
+
+        .assistant-card .content ul li strong {
+            color: #818cf8;
+            font-family: var(--font-mono);
+        }
+
+        [data-theme="light"] .assistant-card .content ul li strong {
+            color: #4f46e5;
+        }
+
+        /* Inline Citation Pills */
+        .inline-citation {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1px 5px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #818cf8;
+            background: rgba(99, 102, 241, 0.16);
+            border: 1px solid rgba(99, 102, 241, 0.32);
+            border-radius: 3px;
+            margin: 0 2px;
+            vertical-align: 1px;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .inline-citation:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #818cf8;
+        }
+
+        [data-theme="light"] .inline-citation {
+            background: #e0e7ff;
+            color: #4338ca;
+            border-color: #c7d2fe;
+        }
+
+        /* Verified Sources Grid */
+        .citations-section {
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+            margin-top: 4px;
+        }
+
+        .citations-title {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-faint);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .citations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 6px;
+        }
+
+        .citation-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.18s ease;
+        }
+
+        .citation-item:hover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .citation-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+        }
+
+        .citation-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 1px 5px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .citation-heading {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .citation-path {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Feedback Bar */
+        .feedback-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.74rem;
+            color: var(--text-faint);
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 8px;
+        }
+
+        .feedback-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            border-radius: 5px;
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.15s ease;
+        }
+
+        .btn-action:hover {
+            border-color: var(--border-hover);
+            color: var(--text-main);
+            background: var(--bg-elevated);
+        }
+
+        /* Floating Input Bar (Sleek Modern AI Style) */
+        .input-bar-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 20px;
+            background: linear-gradient(180deg, transparent 0%, var(--bg-base) 45%);
+            z-index: 15;
+            display: flex;
+            justify-content: center;
+        }
+
+        .input-box {
+            max-width: 760px;
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 7px 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(16px);
+        }
+
+        .input-box:focus-within {
+            border-color: var(--border-focus);
+            box-shadow: 0 6px 25px var(--shadow-glow);
+            transform: translateY(-1px);
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            resize: none;
+            max-height: 120px;
+            padding: 5px 2px;
+            line-height: 1.45;
+        }
+
+        textarea::placeholder {
+            color: var(--text-faint);
+        }
+
+        .btn-send {
+            width: 34px;
+            height: 34px;
+            border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            border: none;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 10px var(--primary-glow);
+            flex-shrink: 0;
+        }
+
+        .btn-send svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .btn-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Document Viewer Drawer (Slide-Out) */
+        .viewer-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 650px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-surface);
+            border-left: 1px solid var(--border);
+            z-index: 100;
+            box-shadow: -15px 0 35px rgba(0, 0, 0, 0.4);
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viewer-drawer.open {
+            transform: translateX(0);
+        }
+
+        .viewer-header {
+            height: 64px;
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-elevated);
+        }
+
+        .viewer-title-wrap {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            max-width: 80%;
+        }
+
+        .viewer-title {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .viewer-subtitle {
+            font-size: 0.72rem;
+            color: var(--text-faint);
+            font-family: var(--font-mono);
+        }
+
+        .viewer-frame {
+            flex: 1;
+            border: none;
+            background: #ffffff;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Quick Search Modal / Command Palette */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 99;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .search-modal {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-xl);
+            width: 680px;
+            max-width: 92vw;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-search-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            font-family: var(--font-body);
+            color: var(--text-main);
+        }
+
+        .modal-results {
+            max-height: 420px;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .modal-item {
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .modal-item:hover {
+            background: var(--bg-elevated);
+            border-color: var(--border);
+        }
+
+        .modal-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .modal-item-title {
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--text-main);
+        }
+
+        .modal-item-meta {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 900px) {
+            aside {
+                display: none;
+            }
+
+            .hero-prompts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-left">
+            <button class="btn-icon" id="sidebarToggleBtn" title="Toggle Sidebar (Ctrl+B)">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="9" y1="3" x2="9" y2="21"></line>
+                </svg>
+            </button>
+            <a href="/" class="brand">
+                <div class="brand-icon">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                <div class="brand-info">
+                    <div class="brand-title-wrap">
+                        <span class="brand-title">Symitar eDocs Assistant</span>
+                        <span class="badge-pro">Episys 2023.00</span>
+                    </div>
+                    <div class="brand-sub">
+                        <span class="status-dot"></span>
+                        <span>Connected & Ready</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="header-actions">
+            <button class="btn-field-palette" id="quickSearchBtn" title="Search Symitar Fields & Mnemonics">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <span>Search Fields</span>
+                <span class="kbd-shortcut">⌘K</span>
+            </button>
+            <button class="btn-icon" id="themeToggle" title="Toggle Dark/Light Mode">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path
+                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                    </path>
+                </svg>
+            </button>
+            <button class="btn-icon" id="newChatHeaderBtn" title="New Conversation">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar -->
+        <aside>
+            <button class="sidebar-btn-new" id="newChatBtn">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span>New Query</span>
+            </button>
+
+            <!-- ChatGPT Style Chat History -->
+            <div class="history-container">
+                <div class="sidebar-nav-header">
+                    <span class="sidebar-nav-title">Chat History</span>
+                    <button class="btn-clear-history" id="clearHistoryBtn" title="Clear All History">Clear All</button>
+                </div>
+                <div class="history-scroll-area" id="historyList">
+                    <!-- Populated dynamically from localStorage -->
+                </div>
+            </div>
+
+            <!-- Quick Record Lookups Section -->
+            <div class="sidebar-shortcuts-section">
+                <div class="sidebar-nav-title">Quick Shortcuts</div>
+                <div class="quick-links">
+                    <div class="quick-link-item" onclick="sendPrompt('LOAN')">
+                        <span class="quick-link-icon">💳</span>
+                        <span>LOAN Record</span>
+                    </div>
+                    <div class="quick-link-item" onclick="sendPrompt('ACCOUNT')">
+                        <span class="quick-link-icon">🏦</span>
+                        <span>ACCOUNT Record</span>
+                    </div>
+                    <div class="quick-link-item" onclick="sendPrompt('SHARE')">
+                        <span class="quick-link-icon">📈</span>
+                        <span>SHARE Record</span>
+                    </div>
+                    <div class="quick-link-item" onclick="sendPrompt('PAYROLL')">
+                        <span class="quick-link-icon">⚡</span>
+                        <span>Payroll Processing</span>
+                    </div>
+                    <div class="quick-link-item" onclick="sendPrompt('ACH')">
+                        <span class="quick-link-icon">🔄</span>
+                        <span>ACH Operations</span>
+                    </div>
+                    <div class="quick-link-item" onclick="sendPrompt('FILE MAINTENANCE')">
+                        <span class="quick-link-icon">📝</span>
+                        <span>File Maintenance</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Chat Main Area -->
+        <main>
+            <div class="chat-thread" id="chatThread">
+                <!-- Hero Landing Screen -->
+                <div class="hero" id="hero">
+                    <div class="hero-pill">
+                        <span>✨</span>
+                        <span>Symitar Episys Copilot</span>
+                    </div>
+                    <h1 class="hero-title" id="heroGreetingTitle">Good Afternoon, Sujal</h1>
+                    <p class="hero-subtitle" id="heroGreetingSubtitle">
+                        What Symitar record, PowerOn mnemonic, or workflow are we exploring today?
+                    </p>
+
+                    <div class="hero-prompts-grid">
+                        <div class="prompt-card" onclick="sendPrompt('LOAN')">
+                            <div class="prompt-card-header">
+                                <span>💳 Record Lookup</span>
+                            </div>
+                            <div class="prompt-card-title">LOAN Record & Codes</div>
+                            <div class="prompt-card-desc">Overview of Loan ID, Loan Type, Loan Code (0-6), and balances.
+                            </div>
+                        </div>
+
+                        <div class="prompt-card" onclick="sendPrompt('PAYROLL')">
+                            <div class="prompt-card-header">
+                                <span>⚡ Core Processing</span>
+                            </div>
+                            <div class="prompt-card-title">Payroll System Overview</div>
+                            <div class="prompt-card-desc">EFT Records, Edit Runs, Batch File Maintenance, and Posting.
+                            </div>
+                        </div>
+
+                        <div class="prompt-card" onclick="sendPrompt('LOANCODE')">
+                            <div class="prompt-card-header">
+                                <span>🔍 Field Mnemonic</span>
+                            </div>
+                            <div class="prompt-card-title">LOANCODE Definitions</div>
+                            <div class="prompt-card-desc">PowerOn mnemonic comparison across records and option values.
+                            </div>
+                        </div>
+
+                        <div class="prompt-card" onclick="sendPrompt('ACCOUNT')">
+                            <div class="prompt-card-header">
+                                <span>🏦 Core Structure</span>
+                            </div>
+                            <div class="prompt-card-title">ACCOUNT Structure</div>
+                            <div class="prompt-card-desc">Member account record fields, tracking relations, and setup.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Input Area -->
+            <div class="input-bar-container">
+                <div class="input-box">
+                    <textarea id="promptInput" rows="1"
+                        placeholder="Ask about any Symitar record, mnemonic, code, or procedure (e.g. LOAN, PAYROLL, DUEDATE)..."></textarea>
+                    <button class="btn-send" id="sendBtn" title="Send Query">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Slide-Out Document Viewer Drawer -->
+    <div class="viewer-drawer" id="viewerDrawer">
+        <div class="viewer-header">
+            <div class="viewer-title-wrap">
+                <div class="viewer-title" id="viewerTitle">eDocs Source Topic</div>
+                <div class="viewer-subtitle" id="viewerDocId">documentation viewer</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-icon" id="openExternalBtn" title="Open in New Window">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6m4-3h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </button>
+                <button class="btn-icon" onclick="closeViewer()" title="Close Viewer">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <iframe class="viewer-frame" id="viewerFrame" src="about:blank"></iframe>
+    </div>
+
+    <!-- Quick Search Modal / Command Palette (⌘K) -->
+    <div class="modal-overlay" id="searchModal">
+        <div class="search-modal">
+            <div class="modal-search-box">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" id="modalInput"
+                    placeholder="Search any PowerOn Mnemonic, Field Name, or Record (e.g. COMMENT, BALANCE)..."
+                    autofocus>
+                <button class="btn-icon" onclick="closeSearchModal()" style="width:30px; height:30px;">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-results" id="modalResults">
+                <div style="padding:24px; text-align:center; color:var(--text-muted); font-size:0.9rem;">
+                    Type to instantly search across all 11,130 Symitar fields...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const promptInput = document.getElementById('promptInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatThread = document.getElementById('chatThread');
+        const hero = document.getElementById('hero');
+        const viewerDrawer = document.getElementById('viewerDrawer');
+        const viewerFrame = document.getElementById('viewerFrame');
+        const viewerTitle = document.getElementById('viewerTitle');
+        const viewerDocId = document.getElementById('viewerDocId');
+        const openExternalBtn = document.getElementById('openExternalBtn');
+        const searchModal = document.getElementById('searchModal');
+        const quickSearchBtn = document.getElementById('quickSearchBtn');
+        const modalInput = document.getElementById('modalInput');
+        const modalResults = document.getElementById('modalResults');
+        const historyList = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+        let isStreaming = false;
+        let currentDocUrl = "";
+
+        // ==========================================
+        // ChatGPT-Style Chat History State Manager
+        // ==========================================
+        const STORAGE_KEY = "symitar_edocs_chat_history";
+        let state = {
+            activeChatId: null,
+            chats: []
+        };
+
+        function generateId() {
+            return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        }
+
+        function loadHistoryFromStorage() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    state = JSON.parse(raw);
+                }
+            } catch (e) {
+                console.error("Failed to load chat history", e);
+                state = { activeChatId: null, chats: [] };
+            }
+            if (!Array.isArray(state.chats)) state.chats = [];
+            renderHistorySidebar();
+
+            // If there's an active chat, display it
+            if (state.activeChatId) {
+                const activeChat = state.chats.find(c => c.id === state.activeChatId);
+                if (activeChat && activeChat.messages.length > 0) {
+                    renderChatMessages(activeChat);
+                    return;
+                }
+            }
+            resetToHero();
+        }
+
+        function saveHistoryToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) {
+                console.error("Failed to save history", e);
+            }
+            renderHistorySidebar();
+        }
+
+        function getOrCreateActiveChat(firstQuery) {
+            let chat = state.chats.find(c => c.id === state.activeChatId);
+            if (!chat) {
+                const title = firstQuery.length > 28 ? firstQuery.substring(0, 28) + '...' : firstQuery;
+                chat = {
+                    id: generateId(),
+                    title: title,
+                    createdAt: Date.now(),
+                    messages: []
+                };
+                state.chats.unshift(chat);
+                state.activeChatId = chat.id;
+            } else if (chat.messages.length === 0) {
+                chat.title = firstQuery.length > 28 ? firstQuery.substring(0, 28) + '...' : firstQuery;
+            }
+            saveHistoryToStorage();
+            return chat;
+        }
+
+        function selectChat(chatId) {
+            if (isStreaming) return;
+            state.activeChatId = chatId;
+            saveHistoryToStorage();
+            const chat = state.chats.find(c => c.id === chatId);
+            if (chat) {
+                renderChatMessages(chat);
+            }
+        }
+
+        function deleteChat(chatId, event) {
+            if (event) event.stopPropagation();
+            state.chats = state.chats.filter(c => c.id !== chatId);
+            if (state.activeChatId === chatId) {
+                state.activeChatId = state.chats.length > 0 ? state.chats[0].id : null;
+                if (state.activeChatId) {
+                    selectChat(state.activeChatId);
+                } else {
+                    resetToHero();
+                }
+            }
+            saveHistoryToStorage();
+        }
+
+        function clearAllHistory() {
+            if (!confirm("Are you sure you want to clear all chat history?")) return;
+            state = { activeChatId: null, chats: [] };
+            saveHistoryToStorage();
+            resetToHero();
+        }
+
+        function renderHistorySidebar() {
+            if (!historyList) return;
+            if (state.chats.length === 0) {
+                historyList.innerHTML = `<div class="history-empty">No conversations yet.<br>Start a new query above.</div>`;
+                return;
+            }
+
+            historyList.innerHTML = state.chats.map(c => `
+                <div class="history-item ${c.id === state.activeChatId ? 'active' : ''}" onclick="selectChat('${c.id}')" title="${escapeHtml(c.title)}">
+                    <div class="history-item-left">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        <span class="history-item-title">${escapeHtml(c.title)}</span>
+                    </div>
+                    <button class="btn-delete-chat" onclick="deleteChat('${c.id}', event)" title="Delete chat">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderChatMessages(chat) {
+            chatThread.innerHTML = '';
+            if (!chat.messages || chat.messages.length === 0) {
+                if (hero) {
+                    hero.style.display = 'flex';
+                    chatThread.appendChild(hero);
+                }
+                return;
+            }
+            if (hero) hero.style.display = 'none';
+
+            chat.messages.forEach(msg => {
+                if (msg.role === 'user') {
+                    appendUserMessage(msg.text);
+                } else if (msg.role === 'assistant') {
+                    const { card, contentEl, citationsEl, metaEl, intentEl, copyBtn } = createAssistantCard();
+                    contentEl.innerHTML = renderContent(msg.text);
+                    if (intentEl && msg.intent) {
+                        intentEl.textContent = msg.intent.replace('_', ' ');
+                    }
+                    if (msg.citations && msg.citations.length) {
+                        renderCitations(msg.citations, citationsEl);
+                    }
+                    if (msg.latency_ms) {
+                        metaEl.textContent = `Generated in ${msg.latency_ms}ms · Grounded in eDocs 2023.00`;
+                    }
+                    copyBtn.onclick = () => copyToClipboard(msg.text, copyBtn);
+                    chatThread.appendChild(card);
+                }
+            });
+            chatThread.scrollTop = chatThread.scrollHeight;
+        }
+
+        function resetToHero() {
+            state.activeChatId = null;
+            chatThread.innerHTML = '';
+            if (hero) {
+                hero.style.display = 'flex';
+                chatThread.appendChild(hero);
+                updateGreeting();
+            }
+            saveHistoryToStorage();
+        }
+
+        // ==========================================
+        // Markdown & Presentation Logic
+        // ==========================================
+        if (window.marked) {
+            marked.setOptions({
+                gfm: true,
+                breaks: true
+            });
+        }
+
+        function renderContent(markdownText) {
+            if (!markdownText) return '';
+            let html = marked.parse(markdownText);
+            // Replace [1], [2], etc. with styled inline citation pills
+            html = html.replace(/\[(\d+)\]/g, '<span class="inline-citation">[$1]</span>');
+            return html;
+        }
+
+        // Auto-resize textarea
+        promptInput.addEventListener('input', () => {
+            promptInput.style.height = 'auto';
+            promptInput.style.height = Math.min(promptInput.scrollHeight, 140) + 'px';
+        });
+
+        promptInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+
+        function sendPrompt(text) {
+            promptInput.value = text;
+            sendMessage();
+        }
+
+        async function sendMessage() {
+            const query = promptInput.value.trim();
+            if (!query || isStreaming) return;
+
+            if (hero) hero.style.display = 'none';
+
+            // Get or create conversation in history
+            const currentChat = getOrCreateActiveChat(query);
+            currentChat.messages.push({ role: 'user', text: query });
+
+            appendUserMessage(query);
+            promptInput.value = '';
+            promptInput.style.height = 'auto';
+            isStreaming = true;
+            sendBtn.disabled = true;
+
+            const { card, contentEl, citationsEl, metaEl, intentEl, copyBtn } = createAssistantCard();
+            chatThread.appendChild(card);
+            chatThread.scrollTop = chatThread.scrollHeight;
+
+            let fullAnswer = "";
+            let currentIntent = "Knowledge Base";
+            let currentCitations = [];
+            let currentLatency = 0;
+
+            try {
+                const response = await fetch('/api/v1/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: query,
+                        release: '2023.00',
+                        conversation_id: currentChat.id
+                    })
+                });
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let buffer = '';
+
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const lines = buffer.split('\n');
+                    buffer = lines.pop();
+
+                    let currentEvent = null;
+                    for (const line of lines) {
+                        if (line.startsWith('event: ')) {
+                            currentEvent = line.substring(7).trim();
+                        } else if (line.startsWith('data: ')) {
+                            const dataStr = line.substring(6).trim();
+                            if (!dataStr) continue;
+                            const data = JSON.parse(dataStr);
+
+                            if (currentEvent === 'meta') {
+                                if (intentEl && data.intent) {
+                                    currentIntent = data.intent;
+                                    intentEl.textContent = data.intent.replace('_', ' ');
+                                }
+                            } else if (currentEvent === 'token') {
+                                fullAnswer += data.text;
+                                contentEl.innerHTML = renderContent(fullAnswer);
+                                chatThread.scrollTop = chatThread.scrollHeight;
+                            } else if (currentEvent === 'answer_final') {
+                                fullAnswer = data.text;
+                                contentEl.innerHTML = renderContent(fullAnswer);
+                            } else if (currentEvent === 'citations') {
+                                currentCitations = data;
+                                renderCitations(data, citationsEl);
+                            } else if (currentEvent === 'done') {
+                                currentLatency = data.latency_ms;
+                                metaEl.textContent = `Generated in ${data.latency_ms}ms · Grounded in eDocs 2023.00`;
+                                copyBtn.onclick = () => copyToClipboard(fullAnswer, copyBtn);
+                            }
+                        }
+                    }
+                }
+
+                // Save assistant reply to conversation history
+                currentChat.messages.push({
+                    role: 'assistant',
+                    text: fullAnswer,
+                    intent: currentIntent,
+                    citations: currentCitations,
+                    latency_ms: currentLatency
+                });
+                saveHistoryToStorage();
+
+            } catch (err) {
+                contentEl.innerHTML = `<span style="color:#ef4444;">Error: ${err.message}</span>`;
+            } finally {
+                isStreaming = false;
+                sendBtn.disabled = false;
+            }
+        }
+
+        function appendUserMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'message-row user';
+            row.innerHTML = `<div class="user-bubble">${escapeHtml(text)}</div>`;
+            chatThread.appendChild(row);
+        }
+
+        function createAssistantCard() {
+            const row = document.createElement('div');
+            row.className = 'message-row';
+
+            const card = document.createElement('div');
+            card.className = 'assistant-card';
+
+            const header = document.createElement('div');
+            header.className = 'assistant-header';
+            header.innerHTML = `
+                <div class="assistant-badge">
+                    <div class="assistant-avatar">S</div>
+                    <span>Symitar eDocs Assistant</span>
+                    <span class="intent-badge" id="cardIntent">Knowledge Base</span>
+                </div>
+                <div class="card-actions">
+                    <button class="btn-copy-answer" title="Copy answer to clipboard">
+                        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        <span>Copy</span>
+                    </button>
+                </div>
+            `;
+
+            const contentEl = document.createElement('div');
+            contentEl.className = 'content';
+            contentEl.innerHTML = '<em>Searching 11,130 indexed eDocs fields & procedures...</em>';
+
+            const citationsEl = document.createElement('div');
+            citationsEl.className = 'citations-section';
+            citationsEl.style.display = 'none';
+
+            const metaBar = document.createElement('div');
+            metaBar.className = 'feedback-bar';
+            const metaEl = document.createElement('span');
+            metaEl.textContent = 'Processing query...';
+
+            const actions = document.createElement('div');
+            actions.className = 'feedback-actions';
+            actions.innerHTML = `
+                <button class="btn-action" title="Helpful" onclick="submitFeedback('up')">👍</button>
+                <button class="btn-action" title="Not helpful" onclick="submitFeedback('down')">👎</button>
+            `;
+
+            metaBar.appendChild(metaEl);
+            metaBar.appendChild(actions);
+
+            card.appendChild(header);
+            card.appendChild(contentEl);
+            card.appendChild(citationsEl);
+            card.appendChild(metaBar);
+            row.appendChild(card);
+
+            const intentEl = header.querySelector('#cardIntent');
+            const copyBtn = header.querySelector('.btn-copy-answer');
+
+            return { card: row, contentEl, citationsEl, metaEl, intentEl, copyBtn };
+        }
+
+        function renderCitations(citations, container) {
+            if (!citations || !citations.length) return;
+            container.style.display = 'block';
+            container.innerHTML = `
+                <div class="citations-title">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Verified eDocs Sources (${citations.length})</span>
+                </div>
+                <div class="citations-grid">
+                    ${citations.map(c => `
+                        <a class="citation-item" href="javascript:void(0)" onclick="openViewer('${c.doc_id}', '${escapeHtml(c.title)}')">
+                            <div class="citation-info">
+                                <div class="citation-heading">
+                                    <span class="citation-badge">[${c.n}]</span>
+                                    <span>${escapeHtml(c.title)}</span>
+                                </div>
+                                <div class="citation-path">${escapeHtml(c.breadcrumb)}</div>
+                            </div>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const origHtml = btn.innerHTML;
+                btn.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg><span>Copied!</span>`;
+                setTimeout(() => { btn.innerHTML = origHtml; }, 2000);
+            });
+        }
+
+        function openViewer(docId, title) {
+            viewerTitle.textContent = title || docId;
+            viewerDocId.textContent = docId;
+            currentDocUrl = `/api/v1/docs/${docId}`;
+            viewerFrame.src = currentDocUrl;
+            viewerDrawer.classList.add('open');
+        }
+
+        function closeViewer() {
+            viewerDrawer.classList.remove('open');
+            viewerFrame.src = 'about:blank';
+        }
+
+        openExternalBtn.addEventListener('click', () => {
+            if (currentDocUrl) window.open(currentDocUrl, '_blank');
+        });
+
+        // Quick Search Modal Logic
+        function openSearchModal() {
+            searchModal.classList.add('open');
+            modalInput.focus();
+        }
+
+        function closeSearchModal() {
+            searchModal.classList.remove('open');
+            modalInput.value = '';
+        }
+
+        quickSearchBtn.addEventListener('click', openSearchModal);
+
+        window.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+            if (e.key === 'Escape') {
+                closeSearchModal();
+                closeViewer();
+            }
+        });
+
+        searchModal.addEventListener('click', (e) => {
+            if (e.target === searchModal) closeSearchModal();
+        });
+
+        // Debounced modal search
+        let searchTimeout = null;
+        modalInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const val = modalInput.value.trim();
+            if (!val) {
+                modalResults.innerHTML = '<div style="padding:24px; text-align:center; color:var(--text-muted); font-size:0.9rem;">Type to instantly search across all 11,130 Symitar fields...</div>';
+                return;
+            }
+            searchTimeout = setTimeout(() => {
+                fetch(`/api/v1/fields?q=${encodeURIComponent(val)}`)
+                    .then(r => r.json())
+                    .then(fields => {
+                        if (!fields.length) {
+                            modalResults.innerHTML = `<div style="padding:24px; text-align:center; color:var(--text-muted); font-size:0.9rem;">No fields found matching "${escapeHtml(val)}".</div>`;
+                            return;
+                        }
+                        modalResults.innerHTML = fields.slice(0, 15).map(f => `
+                            <div class="modal-item" onclick="selectModalField('${escapeHtml(f.record)}', '${escapeHtml(f.poweron_mnemonic || f.field_name)}')">
+                                <div class="modal-item-info">
+                                    <div class="modal-item-title">${escapeHtml(f.field_name)} (${escapeHtml(f.record)})</div>
+                                    <div class="modal-item-meta">Mnemonic: <strong>${escapeHtml(f.poweron_mnemonic || 'N/A')}</strong> · Field #${escapeHtml(f.field_number)} · Type: ${escapeHtml(f.data_type)}</div>
+                                </div>
+                                <span class="badge-pro" style="font-size:0.7rem;">Ask in Chat</span>
+                            </div>
+                        `).join('');
+                    });
+            }, 250);
+        });
+
+        function selectModalField(record, identifier) {
+            closeSearchModal();
+            sendPrompt(`${record} ${identifier}`);
+        }
+
+        function submitFeedback(rating) {
+            fetch('/api/v1/feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message_id: 'sample', rating })
+            }).then(() => alert(`Feedback (${rating}) recorded!`));
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // Dynamic Time-Aware Greeting
+        function updateGreeting() {
+            const titleEl = document.getElementById('heroGreetingTitle');
+            const subEl = document.getElementById('heroGreetingSubtitle');
+            if (!titleEl) return;
+            const hour = new Date().getHours();
+            let greeting = "Good Morning, Sujal";
+            let subtitle = "Let's explore Symitar Episys records, PowerOn mnemonics, and workflows.";
+
+            if (hour >= 22 || hour < 5) {
+                greeting = "Late Night Grind, Sujal";
+                subtitle = "Burning the midnight oil? Instant lookup for Symitar record codes, mnemonics, and batch specs.";
+            } else if (hour >= 5 && hour < 12) {
+                greeting = "Good Morning, Sujal ";
+                subtitle = "Ready to look up PowerOn record structures, mnemonics, or core batch procedures?";
+            } else if (hour >= 12 && hour < 17) {
+                greeting = "Good Afternoon, Sujal";
+                subtitle = "What Symitar record, field definition, or batch procedure are we looking up?";
+            } else {
+                greeting = "Good Evening, Sujal ";
+                subtitle = "Wrapping up the day? Instant verification across 11,130 fields and PowerOn mnemonics.";
+            }
+
+            titleEl.textContent = greeting;
+            if (subEl) subEl.textContent = subtitle;
+        }
+
+        // Sidebar Collapse / Expand Toggle
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-collapsed');
+            const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+            localStorage.setItem('symitar_sidebar_collapsed', isCollapsed ? 'true' : 'false');
+        }
+        if (sidebarToggleBtn) {
+            sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        }
+
+        // Keyboard Shortcut: Ctrl+B or Cmd+B to toggle sidebar
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+        });
+
+        // New Chat Button Listeners
+        document.getElementById('newChatBtn').addEventListener('click', () => {
+            resetToHero();
+            promptInput.focus();
+        });
+        document.getElementById('newChatHeaderBtn').addEventListener('click', () => {
+            resetToHero();
+            promptInput.focus();
+        });
+
+        // Clear History
+        clearHistoryBtn.addEventListener('click', clearAllHistory);
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const nextTheme = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('symitar_theme', nextTheme);
+        });
+
+        // Initialize Theme, Sidebar State, Greeting & Chat History on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('symitar_theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
+            if (localStorage.getItem('symitar_sidebar_collapsed') === 'true') {
+                document.body.classList.add('sidebar-collapsed');
+            }
+            updateGreeting();
+            loadHistoryFromStorage();
+        });
+    </script>
+</body>
+
+</html>

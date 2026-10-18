@@ -1,0 +1,54 @@
+app:
+  default_release: "2023.00"
+  max_history_turns: 6
+  log_level: INFO
+
+llm:
+  provider: ollama
+  base_url: http://localhost:11434/v1
+  model: gpt-oss:20b
+  router_model: gpt-oss:20b
+  temperature: 0.1
+  max_tokens: 1200
+  timeout_s: 60
+  hosted_enabled: false
+
+embeddings:
+  model: BAAI/bge-m3
+  device: cpu
+  batch_size: 16
+  max_length: 1024
+
+reranker:
+  model: BAAI/bge-reranker-v2-m3
+  top_n_in: 40
+  top_n_out: 6
+  min_score: 0.30
+
+retrieval:
+  dense_k: 40
+  sparse_k: 40
+  fusion: rrf
+  keyword_boost: true
+
+chunking:
+  target_tokens: 450
+  max_tokens: 800
+  overlap_tokens: 60
+  table_rows_per_chunk: 25
+
+context:
+  max_context_tokens: 6000
+  expand_to_parent: true
+
+qdrant:
+  url: http://localhost:6333
+  collection: edocs_chunks
+
+postgres:
+  dsn: postgresql://edocs:edocs@localhost:5432/edocs
+
+security:
+  auth_mode: api_key
+  rate_limit_per_minute: 30
+  log_retention_days: 90

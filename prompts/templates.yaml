@@ -1,0 +1,5 @@
+refusal: "I can only help with Symitar Episys documentation. Try asking about an Episys feature, procedure, record or field, PowerOn, a job, or an error message."
+not_found: "I couldn't find this in the indexed eDocs for release {release}."
+pii_notice: "I removed what looked like member or personal data from your question. Please don't paste member information here; I can answer the same question in general terms."
+verification_warning: "Some details could not be confirmed against eDocs and were removed. Please check the linked sources."
+greeting: "Hi! Ask me anything about Symitar Episys documentation — for example a procedure, a record or field, PowerOn syntax, or an error message."

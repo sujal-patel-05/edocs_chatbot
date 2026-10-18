@@ -1,0 +1,40 @@
+# Mapping of normalized first-column table labels to standard database column names
+# Generated from Phase 1 inventory analysis of 15,559 tables
+
+field_number: "field_number"
+"field number": "field_number"
+"field number:": "field_number"
+field: "field_name"
+"field name": "field_name"
+
+mnemonic: "poweron_mnemonic"
+"poweron mnemonic": "poweron_mnemonic"
+"symconnect mnemonic": "symconnect_mnemonic"
+"symxchange mnemonic": "symxchange_mnemonic"
+
+data_type: "data_type"
+"data type": "data_type"
+"data type:": "data_type"
+
+help_file: "help_file"
+"help file": "help_file"
+"help file:": "help_file"
+
+default_value: "default_value"
+"default value": "default_value"
+"default value:": "default_value"
+
+default_control: "default_control"
+"default control": "default_control"
+"default control:": "default_control"
+
+source: "source"
+"source:": "source"
+
+parameter_number: "parameter_number"
+"parameter number": "parameter_number"
+"parameter number:": "parameter_number"
+
+record: "record_name"
+"record name": "record_name"
+description: "description"
