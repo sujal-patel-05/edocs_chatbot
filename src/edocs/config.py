@@ -31,15 +31,45 @@ class AppConfig(BaseModel):
 
 
 class LLMConfig(BaseModel):
-    provider: str = Field(default_factory=lambda: os.getenv("LLM_PROVIDER", "ollama"))
-    base_url: str = Field(default_factory=lambda: os.getenv("LLM_BASE_URL", "http://localhost:11434/v1"))
-    model: str = Field(default_factory=lambda: os.getenv("LLM_MODEL", "gpt-oss:20b"))
-    router_model: str = Field(default_factory=lambda: os.getenv("LLM_ROUTER_MODEL", "gpt-oss:20b"))
+    provider: str = Field(
+        default_factory=lambda: os.getenv(
+            "LLM_PROVIDER", "groq" if os.getenv("GROQ_API_KEY") else "ollama"
+        )
+    )
+    base_url: str = Field(
+        default_factory=lambda: os.getenv(
+            "LLM_BASE_URL",
+            "https://api.groq.com/openai/v1"
+            if (os.getenv("GROQ_API_KEY") or os.getenv("LLM_PROVIDER") == "groq")
+            else "http://localhost:11434/v1",
+        )
+    )
+    model: str = Field(
+        default_factory=lambda: os.getenv(
+            "LLM_MODEL",
+            "llama-3.3-70b-versatile"
+            if (os.getenv("GROQ_API_KEY") or os.getenv("LLM_PROVIDER") == "groq")
+            else "gpt-oss:20b",
+        )
+    )
+    router_model: str = Field(
+        default_factory=lambda: os.getenv(
+            "LLM_ROUTER_MODEL",
+            "llama-3.3-70b-versatile"
+            if (os.getenv("GROQ_API_KEY") or os.getenv("LLM_PROVIDER") == "groq")
+            else "gpt-oss:20b",
+        )
+    )
     api_key: Optional[str] = Field(default_factory=lambda: os.getenv("GROQ_API_KEY") or os.getenv("OPENAI_API_KEY"))
     temperature: float = 0.1
     max_tokens: int = 1200
     timeout_s: int = 60
-    hosted_enabled: bool = Field(default_factory=lambda: os.getenv("HOSTED_LLM_ENABLED", "false").lower() == "true")
+    hosted_enabled: bool = Field(
+        default_factory=lambda: os.getenv(
+            "HOSTED_LLM_ENABLED", "true" if os.getenv("GROQ_API_KEY") else "false"
+        ).lower()
+        == "true"
+    )
 
 
 class EmbeddingsConfig(BaseModel):
