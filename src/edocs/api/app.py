@@ -5,6 +5,21 @@ FastAPI application entrypoint for Symitar eDocs Assistant.
 from __future__ import annotations
 
 from pathlib import Path
+import gzip
+import shutil
+
+
+def ensure_database():
+    db_path = Path("data/edocs.db")
+    gz_path = Path("data/edocs.db.gz")
+    if gz_path.exists() and (not db_path.exists() or db_path.stat().st_size < 10000000):
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        with gzip.open(gz_path, "rb") as f_in, open(db_path, "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+
+
+ensure_database()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -14,20 +29,6 @@ from src.edocs.api.routes_chat import router as chat_router
 from src.edocs.api.routes_docs import router as docs_router
 from src.edocs.api.routes_fields import router as fields_router
 from src.edocs.config import load_settings
-
-
-def ensure_database():
-    db_path = Path("data/edocs.db")
-    gz_path = Path("data/edocs.db.gz")
-    if not db_path.exists() and gz_path.exists():
-        import gzip
-        import shutil
-        db_path.parent.mkdir(parents=True, exist_ok=True)
-        with gzip.open(gz_path, "rb") as f_in, open(db_path, "wb") as f_out:
-            shutil.copyfileobj(f_in, f_out)
-
-
-ensure_database()
 
 app = FastAPI(
     title="Symitar eDocs Assistant API",
@@ -60,10 +61,21 @@ def health_check():
 def readiness_check():
     """Readiness probe: database and models configured."""
     settings = load_settings()
+    chunks = 0
+    fields = 0
+    try:
+        import sqlite3
+        with sqlite3.connect("data/edocs.db") as conn:
+            chunks = conn.execute("SELECT count(*) FROM chunks").fetchone()[0]
+            fields = conn.execute("SELECT count(*) FROM fields").fetchone()[0]
+    except Exception:
+        pass
     return {
         "status": "ready",
         "default_release": settings.app.default_release,
         "llm_provider": settings.llm.provider,
+        "chunks_indexed": chunks,
+        "fields_indexed": fields,
     }
 
 

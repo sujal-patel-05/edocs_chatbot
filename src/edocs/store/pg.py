@@ -16,10 +16,24 @@ from src.edocs.models import Chunk, Document, FieldRecord, IngestStats
 logger = logging.getLogger("edocs.store.pg")
 
 
+def ensure_sqlite_database(sqlite_path: Path):
+    gz_path = sqlite_path.with_suffix(sqlite_path.suffix + ".gz")
+    # If uncompressed database is missing or smaller than 10MB (empty schema), unpack from .gz
+    if gz_path.exists() and (not sqlite_path.exists() or sqlite_path.stat().st_size < 10000000):
+        import gzip
+        import shutil
+        sqlite_path.parent.mkdir(parents=True, exist_ok=True)
+        logger.info("Unpacking compressed database from %s to %s...", gz_path, sqlite_path)
+        with gzip.open(gz_path, "rb") as f_in, open(sqlite_path, "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+        logger.info("Successfully unpacked database: %d bytes", sqlite_path.stat().st_size)
+
+
 class PostgresStore:
     def __init__(self, dsn: str, sqlite_fallback_path: Path | None = None):
         self.dsn = dsn
         self.sqlite_fallback_path = sqlite_fallback_path or Path("data/edocs.db")
+        ensure_sqlite_database(self.sqlite_fallback_path)
         self.use_sqlite = False
         self._init_connection()
 
