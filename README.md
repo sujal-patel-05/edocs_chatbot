@@ -1,13 +1,3 @@
----
-title: Symitar eDocs Assistant
-emoji: 🏦
-colorFrom: indigo
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # Symitar eDocs Assistant
 
 A production-grade, local-first Retrieval-Augmented Generation (RAG) assistant for **Jack Henry Symitar Episys eDocs** compiled HTML Help (`.chm`) documentation.

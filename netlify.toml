@@ -1,0 +1,17 @@
+# Netlify Configuration for Symitar eDocs Assistant
+
+[build]
+  publish = "web"
+
+# Proxy API requests to your Render backend (update your-edocs-backend with your Render URL)
+[[redirects]]
+  from = "/api/*"
+  to = "https://your-edocs-backend.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# Serve reference.html for root and SPA routes
+[[redirects]]
+  from = "/*"
+  to = "/reference.html"
+  status = 200
