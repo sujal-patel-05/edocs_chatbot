@@ -14,6 +14,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-EXPOSE 8000
+# Grant write permissions for auto-extracting database in Hugging Face Spaces (user 1000)
+RUN chmod -R 777 /app
 
-CMD ["uvicorn", "src.edocs.api.app:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 7860
+
+CMD ["sh", "-c", "uvicorn src.edocs.api.app:app --host 0.0.0.0 --port ${PORT:-7860}"]

@@ -15,6 +15,20 @@ from src.edocs.api.routes_docs import router as docs_router
 from src.edocs.api.routes_fields import router as fields_router
 from src.edocs.config import load_settings
 
+
+def ensure_database():
+    db_path = Path("data/edocs.db")
+    gz_path = Path("data/edocs.db.gz")
+    if not db_path.exists() and gz_path.exists():
+        import gzip
+        import shutil
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        with gzip.open(gz_path, "rb") as f_in, open(db_path, "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+
+
+ensure_database()
+
 app = FastAPI(
     title="Symitar eDocs Assistant API",
     description="Internal documentation assistant API for Jack Henry Symitar Episys eDocs",

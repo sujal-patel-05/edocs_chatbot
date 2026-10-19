@@ -1,4 +1,5 @@
-data/
+data/*
+!data/edocs.db.gz
 .env
 __pycache__/
 *.pyc
